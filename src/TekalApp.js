@@ -1,11 +1,10 @@
-import React from 'react'
+import React from "react";
+import { useFetch } from "./hooks/useFetch";
 
 const TekalApp = () => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+  const { data } = useFetch();
+  console.log(data);
+  return <div></div>;
+};
 
-export default TekalApp
+export default TekalApp;
