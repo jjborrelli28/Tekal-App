@@ -7,9 +7,12 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { types } from "../../types/types";
+import { filterData } from "../../helpers/filterData";
+import { sortData } from "../../helpers/sortData";
 
 const Dashboard = () => {
-  const { data, images, videos } = useSelector((state) => state.data);
+  const { data } = useSelector((state) => state.data);
+  const { filterBy } = useSelector((state) => state.filter);
   const { sortBy, mode, title, status } = useSelector((state) => state.sort);
 
   const dispatch = useDispatch();
@@ -17,40 +20,12 @@ const Dashboard = () => {
   const [items, setItems] = useState(data);
 
   useEffect(() => {
-    if (sortBy) {
-      setItems(filter(sortBy, data, mode));
-    } else {
-      setItems(data);
-    }
-  }, [data, images, videos, sortBy, mode]);
+    const newData = filterData(filterBy, data);
+    sortData(sortBy, mode, newData);
+    setItems(newData);
+  }, [data, filterBy, sortBy, mode]);
 
-  const filter = (sortBy, items, mode) => {
-    const backUpItems = [...items];
-    if (mode === "asc") {
-      backUpItems?.sort((a, b) => {
-        if (a[sortBy] < b[sortBy]) {
-          return 1;
-        }
-        if (a[sortBy] > b[sortBy]) {
-          return -1;
-        }
-        return 0;
-      });
-      return backUpItems;
-    } else {
-      backUpItems?.sort((a, b) => {
-        if (a[sortBy] > b[sortBy]) {
-          return 1;
-        }
-        if (a[sortBy] < b[sortBy]) {
-          return -1;
-        }
-        return 0;
-      });
-      return backUpItems;
-    }
-  };
-
+  console.log(items);
   return (
     <div>
       <Tab.Container id="left-tabs-example" defaultActiveKey="first">
@@ -60,13 +35,22 @@ const Dashboard = () => {
               <Nav.Item className="ps-3 pt-1 pe-3 pb-1">
                 <h5>Filters:</h5>
               </Nav.Item>
-              <Nav.Item className="filters" onClick={() => setItems(data)}>
-                <Nav.Link eventKey="first">None</Nav.Link>
+              <Nav.Item
+                className="filters"
+                onClick={() => dispatch({ type: types.F_DISABLE })}
+              >
+                <Nav.Link eventKey="first">Disable</Nav.Link>
               </Nav.Item>
-              <Nav.Item className="filters" onClick={() => setItems(images)}>
+              <Nav.Item
+                className="filters"
+                onClick={() => dispatch({ type: types.IMAGES })}
+              >
                 <Nav.Link eventKey="second">Images</Nav.Link>
               </Nav.Item>{" "}
-              <Nav.Item className="filters" onClick={() => setItems(videos)}>
+              <Nav.Item
+                className="filters"
+                onClick={() => dispatch({ type: types.VIDEOS })}
+              >
                 <Nav.Link eventKey="third">Videos</Nav.Link>
               </Nav.Item>
             </Nav>
@@ -87,15 +71,15 @@ const Dashboard = () => {
 
                 <Dropdown.Menu variant="dark">
                   <Dropdown.Item
-                    active={status.none}
+                    active={status.disable}
                     onClick={({ target }) =>
                       dispatch({
-                        type: types.NONE,
+                        type: types.S_DISABLE,
                         payload: target.textContent,
                       })
                     }
                   >
-                    None
+                    Disable
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item
@@ -113,7 +97,7 @@ const Dashboard = () => {
                     active={status.m1_dsc}
                     onClick={({ target }) =>
                       dispatch({
-                        type: types.M1_DESC,
+                        type: types.M1_DSC,
                         payload: target.textContent,
                       })
                     }
@@ -135,7 +119,7 @@ const Dashboard = () => {
                     active={status.m2_dsc}
                     onClick={({ target }) =>
                       dispatch({
-                        type: types.M2_DESC,
+                        type: types.M2_DSC,
                         payload: target.textContent,
                       })
                     }
@@ -157,7 +141,7 @@ const Dashboard = () => {
                     active={status.m3_dsc}
                     onClick={({ target }) =>
                       dispatch({
-                        type: types.M3_DESC,
+                        type: types.M3_DSC,
                         payload: target.textContent,
                       })
                     }

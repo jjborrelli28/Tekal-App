@@ -1,9 +1,15 @@
 export const types = {
-  NONE: "NONE",
+  //FILTERS BY SEARCH
+  F_DISABLE: "F_DISABLE",
+  IMAGES: "IMAGES",
+  VIDEOS: "VIDEOS",
+
+  //SORTS BY SEARCH
+  S_DISABLE: "S_DISABLE",
   M1_ASC: "M1_ASC",
-  M1_DESC: "M1_DESC",
+  M1_DSC: "M1_DSC",
   M2_ASC: "M2_ASC",
-  M2_DESC: "M2_DESC",
+  M2_DSC: "M2_DSC",
   M3_ASC: "M3_ASC",
-  M3_DESC: "M3_DESC",
+  M3_DSC: "M3_DSC",
 };

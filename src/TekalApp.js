@@ -5,7 +5,6 @@ import Dashboard from "./pages/dashboard/Dashboard";
 
 const TekalApp = () => {
   const dispatch = useDispatch();
-
   dispatch(getList());
 
   return (
