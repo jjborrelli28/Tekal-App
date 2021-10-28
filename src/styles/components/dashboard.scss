@@ -6,8 +6,14 @@
 }
 
 .filters {
+  a {
+    color: #ffffff;
+  }
 }
 
 .filters:hover {
   cursor: pointer;
+  a {
+    color: darken($color: #ffffff, $amount: 15);
+  }
 }

@@ -1,23 +1,55 @@
 import Table from "react-bootstrap/Table";
 import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Nav from "react-bootstrap/Nav";
 import Dropdown from "react-bootstrap/Dropdown";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { types } from "../../types/types";
 
 const Dashboard = () => {
   const { data, images, videos } = useSelector((state) => state.data);
+  const { sortBy, mode, title, status } = useSelector((state) => state.sort);
+
+  const dispatch = useDispatch();
 
   const [items, setItems] = useState(data);
 
   useEffect(() => {
-    setItems(data);
-  }, [data, images, videos]);
+    if (sortBy) {
+      setItems(filter(sortBy, data, mode));
+    } else {
+      setItems(data);
+    }
+  }, [data, images, videos, sortBy, mode]);
 
-  console.log(items);
+  const filter = (sortBy, items, mode) => {
+    const backUpItems = [...items];
+    if (mode === "asc") {
+      backUpItems?.sort((a, b) => {
+        if (a[sortBy] < b[sortBy]) {
+          return 1;
+        }
+        if (a[sortBy] > b[sortBy]) {
+          return -1;
+        }
+        return 0;
+      });
+      return backUpItems;
+    } else {
+      backUpItems?.sort((a, b) => {
+        if (a[sortBy] > b[sortBy]) {
+          return 1;
+        }
+        if (a[sortBy] < b[sortBy]) {
+          return -1;
+        }
+        return 0;
+      });
+      return backUpItems;
+    }
+  };
 
   return (
     <div>
@@ -47,21 +79,91 @@ const Dashboard = () => {
               <Dropdown>
                 <Dropdown.Toggle
                   id="dropdown-button-dark-example1"
-                  variant="dark"
+                  variant="primary"
                   style={{ height: "40px", width: "100%" }}
                 >
-                  None
+                  {title}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu variant="dark">
-                  <Dropdown.Item active>None</Dropdown.Item>
+                  <Dropdown.Item
+                    active={status.none}
+                    onClick={({ target }) =>
+                      dispatch({
+                        type: types.NONE,
+                        payload: target.textContent,
+                      })
+                    }
+                  >
+                    None
+                  </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item>M1 ASC</Dropdown.Item>
-                  <Dropdown.Item>M1 DESC</Dropdown.Item>
-                  <Dropdown.Item>M2 ASC</Dropdown.Item>
-                  <Dropdown.Item>M2 DESC</Dropdown.Item>
-                  <Dropdown.Item>M3 ASC</Dropdown.Item>
-                  <Dropdown.Item>M3 DESC</Dropdown.Item>
+                  <Dropdown.Item
+                    active={status.m1_asc}
+                    onClick={({ target }) =>
+                      dispatch({
+                        type: types.M1_ASC,
+                        payload: target.textContent,
+                      })
+                    }
+                  >
+                    M1 ▲
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    active={status.m1_dsc}
+                    onClick={({ target }) =>
+                      dispatch({
+                        type: types.M1_DESC,
+                        payload: target.textContent,
+                      })
+                    }
+                  >
+                    M1 ▼
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    active={status.m2_asc}
+                    onClick={({ target }) =>
+                      dispatch({
+                        type: types.M2_ASC,
+                        payload: target.textContent,
+                      })
+                    }
+                  >
+                    M2 ▲
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    active={status.m2_dsc}
+                    onClick={({ target }) =>
+                      dispatch({
+                        type: types.M2_DESC,
+                        payload: target.textContent,
+                      })
+                    }
+                  >
+                    M2 ▼
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    active={status.m3_asc}
+                    onClick={({ target }) =>
+                      dispatch({
+                        type: types.M3_ASC,
+                        payload: target.textContent,
+                      })
+                    }
+                  >
+                    M3 ▲
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    active={status.m3_dsc}
+                    onClick={({ target }) =>
+                      dispatch({
+                        type: types.M3_DESC,
+                        payload: target.textContent,
+                      })
+                    }
+                  >
+                    M3 ▼
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Nav>
