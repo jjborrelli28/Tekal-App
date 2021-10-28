@@ -17,3 +17,8 @@
     color: darken($color: #ffffff, $amount: 15);
   }
 }
+
+.control-panel {
+  border: solid 0.1rem gray;
+  border-radius: 0.25rem;
+}
