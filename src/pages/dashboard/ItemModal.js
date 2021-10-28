@@ -50,7 +50,7 @@ const ItemModal = ({ showItem, setShowItem }) => {
                 {Object.entries(item).map(
                   ([key, value], index) =>
                     value !== "-" && (
-                      <p>
+                      <p key={key}>
                         <span>
                           {key.charAt(0).toUpperCase() + key.slice(1)}:{" "}
                         </span>

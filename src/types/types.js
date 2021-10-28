@@ -16,4 +16,8 @@ export const types = {
   //SHOW ITEM MODAL
   SET_ITEM: "SET_ITEM",
   UNSET_ITEM: "UNSET_ITEM",
+
+  //SEARCH
+  SEARCH: "SEARCH",
+  RESET_SEARCH: "RESET_SEARCH",
 };
