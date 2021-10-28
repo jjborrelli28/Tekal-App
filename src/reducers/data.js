@@ -13,6 +13,8 @@ const data = createSlice({
   name: "data",
   initialState: {
     data: [],
+    images: [],
+    videos: [],
     status: null,
   },
   extraReducers: {
@@ -22,6 +24,8 @@ const data = createSlice({
     [getList.fulfilled]: (state, action) => {
       state.status = "success";
       state.data = action.payload;
+      state.images = action.payload.filter((item) => item.type && item);
+      state.videos = action.payload.filter((item) => !item.type && item);
     },
     [getList.rejected]: (state, action) => {
       state.status = "failed";
