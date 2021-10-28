@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { filterData } from "../../helpers/filterData";
 import { sortData } from "../../helpers/sortData";
 import ControlPanel from "./ControlPanel";
+import ItemModal from "./ItemModal";
+import { types } from "../../types/types";
 
 const Dashboard = () => {
   const { data } = useSelector((state) => state.data);
@@ -12,6 +14,9 @@ const Dashboard = () => {
   const { sortBy, mode } = useSelector((state) => state.sort);
 
   const [items, setItems] = useState(data);
+  const [showItem, setShowItem] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const newData = filterData(filterBy, data);
@@ -19,7 +24,11 @@ const Dashboard = () => {
     setItems(newData);
   }, [data, filterBy, sortBy, mode]);
 
-  console.log(items);
+  const showItemModal = (item) => {
+    dispatch({ type: types.SET_ITEM, payload: item });
+    setShowItem(true);
+  };
+
   return (
     <Container>
       <ControlPanel />
@@ -37,7 +46,11 @@ const Dashboard = () => {
         </thead>
         <tbody>
           {items?.map((item, index) => (
-            <tr className="item" key={index}>
+            <tr
+              className="item"
+              key={index}
+              onClick={() => showItemModal(item)}
+            >
               <td>{item.id}</td>
               <td>{item.name}</td>
               <td>{item.type ? "Video" : "image"}</td>
@@ -49,6 +62,7 @@ const Dashboard = () => {
           ))}
         </tbody>
       </Table>
+      <ItemModal showItem={showItem} setShowItem={setShowItem} />
     </Container>
   );
 };

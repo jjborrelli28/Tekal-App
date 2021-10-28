@@ -12,4 +12,8 @@ export const types = {
   M2_DSC: "M2_DSC",
   M3_ASC: "M3_ASC",
   M3_DSC: "M3_DSC",
+
+  //SHOW ITEM MODAL
+  SET_ITEM: "SET_ITEM",
+  UNSET_ITEM: "UNSET_ITEM",
 };

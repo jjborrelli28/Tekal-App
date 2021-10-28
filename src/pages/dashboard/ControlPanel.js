@@ -15,7 +15,7 @@ const ControlPanel = () => {
     <div className="p-2">
       <Tab.Container id="left-tabs-example" defaultActiveKey="first">
         <Row className="">
-          <Col sm={1}>
+          <Col lg={1}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item className="ps-3 pt-1 pe-3 pb-1">
                 <h5>Filters:</h5>
@@ -40,7 +40,7 @@ const ControlPanel = () => {
               </Nav.Item>
             </Nav>
           </Col>
-          <Col sm={2}>
+          <Col lg={2}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item className="ps-3 pt-1 pe-3 pb-1">
                 <h5>Sort by:</h5>
