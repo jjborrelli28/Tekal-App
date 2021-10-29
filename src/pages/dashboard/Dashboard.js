@@ -12,14 +12,14 @@ import SpinnerComponent from "./SpinnerComponent";
 const Dashboard = () => {
   const { data } = useSelector((state) => state.data);
   const { filterBy } = useSelector((state) => state.filter);
-  const { sortBy, mode } = useSelector((state) => state.sort);
+  const { sortBy, mode, title, status } = useSelector((state) => state.sort);
   const { search } = useSelector((state) => state);
 
   const [items, setItems] = useState(data);
   const [showItem, setShowItem] = useState(false);
 
   const dispatch = useDispatch();
-
+  console.log(search);
   useEffect(() => {
     const newData = filterData(filterBy, data);
     sortData(sortBy, mode, newData);
@@ -41,19 +41,90 @@ const Dashboard = () => {
           striped
           bordered
           hover
-          responsive
+          responsive="sm"
           variant="dark"
           className="mt-3"
         >
           <thead>
             <tr>
-              <th>ID</th>
               <th>Name</th>
               <th>Type</th>
               <th>Sector</th>
-              <th>M1</th>
-              <th>M2</th>
-              <th>M3</th>
+              <th
+                className="th-sort"
+                onClick={() => {
+                  if (status.disable) {
+                    dispatch({
+                      type: types.M1_ASC,
+                    });
+                  } else if (status.m1_asc) {
+                    dispatch({
+                      type: types.M1_DSC,
+                    });
+                  } else if (status.m1_dsc) {
+                    dispatch({
+                      type: types.S_DISABLE,
+                    });
+                  } else {
+                    dispatch({
+                      type: types.M1_ASC,
+                    });
+                  }
+                }}
+              >
+                Memorability Score M1{" "}
+                {status.m1_asc ? "▲" : status.m1_dsc ? "▼" : "○"}
+              </th>
+              <th
+                className="th-sort"
+                onClick={() => {
+                  if (status.disable) {
+                    dispatch({
+                      type: types.M2_ASC,
+                    });
+                  } else if (status.m2_asc) {
+                    dispatch({
+                      type: types.M2_DSC,
+                    });
+                  } else if (status.m2_dsc) {
+                    dispatch({
+                      type: types.S_DISABLE,
+                    });
+                  } else {
+                    dispatch({
+                      type: types.M2_ASC,
+                    });
+                  }
+                }}
+              >
+                Memorability Score M2{" "}
+                {status.m2_asc ? "▲" : status.m2_dsc ? "▼" : "○"}
+              </th>
+              <th
+                className="th-sort"
+                onClick={() => {
+                  if (status.disable) {
+                    dispatch({
+                      type: types.M3_ASC,
+                    });
+                  } else if (status.m3_asc) {
+                    dispatch({
+                      type: types.M3_DSC,
+                    });
+                  } else if (status.m3_dsc) {
+                    dispatch({
+                      type: types.S_DISABLE,
+                    });
+                  } else {
+                    dispatch({
+                      type: types.M3_ASC,
+                    });
+                  }
+                }}
+              >
+                Memorability Score M3{" "}
+                {status.m3_asc ? "▲" : status.m3_dsc ? "▼" : "○"}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +134,6 @@ const Dashboard = () => {
                 key={index}
                 onClick={() => showItemModal(item)}
               >
-                <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td>{item.type ? "Video" : "image"}</td>
                 <td>{item.sector}</td>

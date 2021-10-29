@@ -1,6 +1,3 @@
-.item {
-}
-
 .item:hover {
   cursor: pointer;
 }
@@ -16,4 +13,11 @@
   a {
     color: darken($color: #ffffff, $amount: 15);
   }
+}
+
+.th-sort {
+}
+
+.th-sort:hover {
+  cursor: pointer;
 }

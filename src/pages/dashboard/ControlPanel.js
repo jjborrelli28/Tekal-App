@@ -26,7 +26,6 @@ const ControlPanel = () => {
   const handleSubmitForm = (e) => {
     e.preventDefault();
     dispatch({ type: types.SEARCH, payload: value.toLowerCase() });
-    setValue("");
   };
 
   return (
@@ -36,12 +35,7 @@ const ControlPanel = () => {
           <Col lg={6}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item className="ps-3 pt-1 pe-3 pb-1">
-                <h5>
-                  Search:{" "}
-                  <span style={{ fontWeight: "normal", color: "lightgray" }}>
-                    {search && `"${search}"`}
-                  </span>
-                </h5>
+                <h5>Search: </h5>
               </Nav.Item>
               <Form onSubmit={handleSubmitForm}>
                 <InputGroup className="mb-3" style={{ height: "40px" }}>
@@ -57,7 +51,7 @@ const ControlPanel = () => {
                     id="button-addon2"
                     onClick={handleSubmitForm}
                   >
-                    Button
+                    Search
                   </Button>
                 </InputGroup>
               </Form>
@@ -88,103 +82,7 @@ const ControlPanel = () => {
               </Nav.Item>
             </Nav>
           </Col>
-          <Col lg={2}>
-            <Nav variant="pills" className="flex-column">
-              <Nav.Item className="ps-3 pt-1 pe-3 pb-1">
-                <h5>Sort by:</h5>
-              </Nav.Item>
-              <Dropdown>
-                <Dropdown.Toggle
-                  id="dropdown-button-dark-example1"
-                  variant="primary"
-                  style={{ height: "40px", width: "100%" }}
-                >
-                  {title}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu variant="dark">
-                  <Dropdown.Item
-                    active={status.disable}
-                    onClick={({ target }) =>
-                      dispatch({
-                        type: types.S_DISABLE,
-                        payload: target.textContent,
-                      })
-                    }
-                  >
-                    Disable
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item
-                    active={status.m1_asc}
-                    onClick={({ target }) =>
-                      dispatch({
-                        type: types.M1_ASC,
-                        payload: target.textContent,
-                      })
-                    }
-                  >
-                    M1 ▲
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    active={status.m1_dsc}
-                    onClick={({ target }) =>
-                      dispatch({
-                        type: types.M1_DSC,
-                        payload: target.textContent,
-                      })
-                    }
-                  >
-                    M1 ▼
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    active={status.m2_asc}
-                    onClick={({ target }) =>
-                      dispatch({
-                        type: types.M2_ASC,
-                        payload: target.textContent,
-                      })
-                    }
-                  >
-                    M2 ▲
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    active={status.m2_dsc}
-                    onClick={({ target }) =>
-                      dispatch({
-                        type: types.M2_DSC,
-                        payload: target.textContent,
-                      })
-                    }
-                  >
-                    M2 ▼
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    active={status.m3_asc}
-                    onClick={({ target }) =>
-                      dispatch({
-                        type: types.M3_ASC,
-                        payload: target.textContent,
-                      })
-                    }
-                  >
-                    M3 ▲
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    active={status.m3_dsc}
-                    onClick={({ target }) =>
-                      dispatch({
-                        type: types.M3_DSC,
-                        payload: target.textContent,
-                      })
-                    }
-                  >
-                    M3 ▼
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Nav>
-          </Col>
+          <Col lg={2}></Col>
         </Row>
       </Tab.Container>
     </div>
