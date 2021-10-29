@@ -10,7 +10,7 @@ const TekalApp = () => {
   return (
     <Container>
       <header className="mt-4">
-        <h1>Tekal App</h1>
+        <h1 className="ms-4">Tekal App</h1>
         <hr />
       </header>
       <Dashboard />

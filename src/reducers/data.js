@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import fetchData from "../helpers/fetchData";
+import { fetchData } from "../helpers/fetchData";
 
 export const getList = createAsyncThunk(
   "data/getList",
@@ -12,9 +12,7 @@ export const getList = createAsyncThunk(
 const data = createSlice({
   name: "data",
   initialState: {
-    data: [],
-    images: [],
-    videos: [],
+    data: null,
     status: null,
   },
   extraReducers: {
@@ -24,8 +22,6 @@ const data = createSlice({
     [getList.fulfilled]: (state, action) => {
       state.status = "success";
       state.data = action.payload;
-      state.images = action.payload.filter((item) => item.type && item);
-      state.videos = action.payload.filter((item) => !item.type && item);
     },
     [getList.rejected]: (state, action) => {
       state.status = "failed";
