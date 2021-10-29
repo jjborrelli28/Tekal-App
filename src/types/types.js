@@ -1,6 +1,8 @@
 export const types = {
   //SORTS BY SEARCH
   DISABLE: "DISABLE",
+  ID_ASC: "ID_ASC",
+  ID_DSC: "ID_DSC",
   NAME_ASC: "NAME_ASC",
   NAME_DSC: "NAME_DSC",
   SECTOR_ASC: "SECTOR_ASC",

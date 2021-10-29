@@ -1,14 +1,14 @@
 import { types } from "../types/types";
 
 const initialState = {
-  item: null,
+  index: null,
 };
 
 const item = (state = initialState, action) => {
   switch (action.type) {
     case types.SET_ITEM:
       return {
-        item: action.payload,
+        index: action.payload,
       };
 
     case types.UNSET_ITEM:

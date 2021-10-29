@@ -5,6 +5,8 @@ const initialState = {
   mode: null,
   status: {
     disable: true,
+    id_asc: null,
+    id_dsc: null,
     name_asc: null,
     name_dsc: null,
     sector_asc: null,
@@ -24,6 +26,28 @@ const sort = (state = initialState, action) => {
   switch (action.type) {
     case types.DISABLE:
       return initialState;
+
+    case types.ID_ASC:
+      return {
+        sortBy: "id",
+        mode: "asc",
+        status: {
+          ...initialState.status,
+          disable: null,
+          id_asc: true,
+        },
+      };
+
+    case types.ID_DSC:
+      return {
+        sortBy: "id",
+        mode: "dsc",
+        status: {
+          ...initialState.status,
+          disable: null,
+          id_dsc: true,
+        },
+      };
 
     case types.NAME_ASC:
       return {
@@ -163,4 +187,3 @@ const sort = (state = initialState, action) => {
 };
 
 export default sort;
-

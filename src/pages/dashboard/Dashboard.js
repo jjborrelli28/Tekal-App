@@ -12,7 +12,6 @@ import { toggleIcon } from "../../helpers/toggleIcon";
 
 const Dashboard = () => {
   const { data } = useSelector((state) => state.data);
-  const { filterBy } = useSelector((state) => state.filter);
   const { sortBy, mode, status } = useSelector((state) => state.sort);
   const { search } = useSelector((state) => state);
 
@@ -29,10 +28,10 @@ const Dashboard = () => {
         (item) => item.name.toLowerCase().includes(search) && item
       )
     );
-  }, [data, filterBy, sortBy, mode, search]);
+  }, [data, sortBy, mode, search]);
 
-  const showItemModal = (item) => {
-    dispatch({ type: types.SET_ITEM, payload: item });
+  const showItemModal = (index) => {
+    dispatch({ type: types.SET_ITEM, payload: index });
     setShowItem(true);
   };
 
@@ -72,6 +71,18 @@ const Dashboard = () => {
           >
             <thead>
               <tr>
+                <th
+                  onClick={() => {
+                    toggleSort(
+                      types.ID_ASC,
+                      types.ID_DSC,
+                      status.id_asc,
+                      status.id_dsc
+                    );
+                  }}
+                >
+                  Id {toggleIcon(status.id_asc, status.id_dsc)}
+                </th>
                 <th
                   onClick={() => {
                     toggleSort(
@@ -151,7 +162,8 @@ const Dashboard = () => {
             </thead>
             <tbody style={{ position: "relative" }}>
               {items.map((item, index) => (
-                <tr key={index} onClick={() => showItemModal(item)}>
+                <tr key={index} onClick={() => showItemModal(index)}>
+                  <td>{item.id}</td>
                   <td>{item.name}</td>
                   <td>{item.type ? "Video" : "image"}</td>
                   <td>{item.sector}</td>
@@ -168,7 +180,7 @@ const Dashboard = () => {
       ) : (
         <SpinnerComponent />
       )}
-      <ItemModal showItem={showItem} setShowItem={setShowItem} />
+      <ItemModal showItem={showItem} setShowItem={setShowItem} items={items} />
     </Container>
   );
 };
