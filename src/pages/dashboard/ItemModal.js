@@ -97,7 +97,7 @@ const ItemModal = ({ showItem, setShowItem, items }) => {
                       backgroundColor: `${scoresColors(best_score)}`,
                     }}
                   >
-                    {best_score.toFixed(1)}
+                    {best_score?.toFixed(1)}
                   </div>
                 </div>
               </Col>

@@ -24,7 +24,9 @@ const Dashboard = () => {
     const newData = data && [...data];
     sortData(sortBy, mode, newData);
     setItems(
-      newData?.filter((item) => item.name.toLowerCase().includes(search))
+      newData?.filter(
+        (item) => item.name.toLowerCase().includes(search) && item.url_original
+      )
     );
   }, [data, sortBy, mode, search]);
 
