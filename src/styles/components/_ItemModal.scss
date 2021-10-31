@@ -1,5 +1,12 @@
 .item-modal {
   color: #000000;
+  padding: 0px;
+}
+
+.title-item {
+  width: 100%;
+  text-align: center;
+  color: #000000;
 }
 
 .description {
@@ -16,4 +23,19 @@
   p {
     margin: 0.5rem;
   }
+}
+
+.media {
+  height: 300px;
+}
+
+.best_score {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  height: 4rem;
+  width: 4rem;
+  font-size: 1.5rem;
+  text-shadow: 0px 0.1rem 0.33rem black;
+  border: solid 0.1rem black;
 }

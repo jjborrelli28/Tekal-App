@@ -2,33 +2,61 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Accordion from "react-bootstrap/Accordion";
 import { useDispatch, useSelector } from "react-redux";
-import moment from "moment";
 import { types } from "../../types/types";
+import moment from "moment";
+import { scoresColors } from "../../helpers/scoresColors";
+import ArrowNext from "../../Icons/ArrowNext";
+import ArrowPrevious from "../../Icons/ArrowPrevious";
+import Image from "../../Icons/Image";
+import Video from "../../Icons/Video";
+import AreaChartMemorability from "./AreaChartMemorability";
+import BarChartMemorability from "./BarChartMemorability";
 
 const ItemModal = ({ showItem, setShowItem, items }) => {
   const { index } = useSelector((state) => state.item);
 
   const dispatch = useDispatch();
 
+  const item = items && items[index];
+
+  // Scores ordenados de mayor a menor
+  const scores =
+    item &&
+    [
+      ["m1", item.perc_score_m1],
+      ["m2", item.perc_score_m2],
+      ["m3", item.perc_score_m3],
+    ].sort((a, b) => {
+      if (a[1] < b[1]) {
+        return 1;
+      }
+      if (a[1] > b[1]) {
+        return -1;
+      }
+      return 0;
+    });
+
+  //Mejor score de los 3
+  const best_score = item && scores[0][1];
+
+  //Scores de memorabilidad por frames
+  const data =
+    item?.type &&
+    JSON.parse(item[`perc_scores_${scores[0][0]}`])?.map((Score, index) => ({
+      name: index + 1,
+      Score,
+    }));
+
   const hideItemModal = () => {
     dispatch({ type: types.UNSET_ITEM });
     setShowItem(false);
   };
 
-  const memo_score = items &&
-    index && [
-      items[index].perc_score_m1,
-      items[index].perc_score_m2,
-      items[index].perc_score_m3,
-    ];
-
-  memo_score && memo_score.sort((a, b) => b - a);
-  const best_score = memo_score && memo_score[0];
-
   return (
     <>
-      {items && index !== null && (
+      {item && (
         <Modal
           size="lg"
           show={showItem}
@@ -39,56 +67,34 @@ const ItemModal = ({ showItem, setShowItem, items }) => {
           <Modal.Header closeButton>
             <Modal.Title
               id="contained-modal-title-vcenter"
-              style={{ color: "#000000" }}
+              className="title-item"
             >
-              {items[index].name}
+              <h3>
+                {item.name} (ID: {item.id})
+              </h3>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
               <Col md={6}>
                 <div style={{ position: "relative" }}>
-                  {items[index].type ? (
+                  {item.type ? (
                     <video
-                      src={items[index].url_original}
+                      src={item.url_original}
                       controls
-                      className="w-100 rounded"
-                      style={{ maxHeight: "300px" }}
+                      className="w-100 rounded media"
                     />
                   ) : (
                     <img
-                      src={items[index].url_original}
-                      alt={items[index].id}
-                      className="w-100 rounded"
+                      src={item.url_original}
+                      alt={item.id}
+                      className="w-100 rounded media"
                     />
                   )}
                   <div
-                    className="d-flex justify-content-center align-items-center rounded-circle"
+                    className="d-flex justify-content-center align-items-center rounded-circle best_score"
                     style={{
-                      backgroundColor: `${
-                        best_score >= 95
-                          ? "#0e6202"
-                          : best_score >= 90
-                          ? "#0e6202"
-                          : best_score >= 85
-                          ? "#19cd0a"
-                          : best_score >= 80
-                          ? "#e4c64e"
-                          : best_score >= 75
-                          ? "#e3b500"
-                          : best_score >= 70
-                          ? "#e3882f"
-                          : best_score >= 65
-                          ? "#e35629"
-                          : "#c43000"
-                      }`,
-                      textShadow: "0px 0.1rem 0.33rem black",
-                      position: "absolute",
-                      top: "1rem",
-                      right: "1rem",
-                      fontSize: "1.5rem",
-                      height: "4rem",
-                      width: "4rem",
+                      backgroundColor: `${scoresColors(best_score)}`,
                     }}
                   >
                     {best_score.toFixed(1)}
@@ -97,14 +103,61 @@ const ItemModal = ({ showItem, setShowItem, items }) => {
               </Col>
               <Col md={6}>
                 <div
-                  className="rounded h-100 description"
-                  style={{ border: "solid lightgray .1rem" }}
+                  className="rounded h-100 description pt-1"
+                  style={{
+                    border: "solid lightgray .1rem",
+                  }}
                 >
-                  {console.log(items[index])}
-                  <p>
-                    <span>Name: </span>
-                    {items[index].name}
-                  </p>
+                  {item.type ? (
+                    <AreaChartMemorability
+                      data={data}
+                      scores={scores}
+                      best_score={best_score}
+                    />
+                  ) : (
+                    <BarChartMemorability scores={scores} item={item} />
+                  )}
+                  <Accordion className="mt-5">
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header>More info</Accordion.Header>
+                      <Accordion.Body>
+                        <p>
+                          <span>Text prominence: </span>
+                          {item.global_txt_sal}
+                        </p>
+                        <p>
+                          <span>Type: </span>
+                          {item.type ? <Video /> : <Image />}
+                        </p>
+                        <p>
+                          <span>Date: </span>
+                          {moment(item.date).format("LL")}
+                        </p>
+                        <p>
+                          <span>URL: </span>
+                          <a href={item.url_original}>{item.url_original}</a>
+                        </p>
+                        {item.type ? (
+                          <div>
+                            <p>
+                              <span>FPS: </span>
+                              {item.fps}
+                            </p>
+                            <p>
+                              <span>Frames count: </span>
+                              {item.frame_count}
+                            </p>
+                            <p>
+                              <span>Duration: </span>
+                              {parseInt(item.duration).toFixed(0)} seconds
+                            </p>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </Accordion>
                 </div>
               </Col>
             </Row>
@@ -115,17 +168,9 @@ const ItemModal = ({ showItem, setShowItem, items }) => {
                 onClick={() => {
                   dispatch({ type: types.SET_ITEM, payload: index - 1 });
                 }}
+                disabled={index === 0 ? true : false}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.75rem"
-                  height="1.75rem"
-                  fill="currentColor"
-                  className="bi bi-arrow-left-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-                </svg>
+                <ArrowPrevious />
               </Button>
               <Button
                 variant="primary"
@@ -133,17 +178,9 @@ const ItemModal = ({ showItem, setShowItem, items }) => {
                 onClick={() => {
                   dispatch({ type: types.SET_ITEM, payload: index + 1 });
                 }}
+                disabled={index === items.length - 1 ? true : false}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.75rem"
-                  height="1.75rem"
-                  fill="currentColor"
-                  className="bi bi-arrow-right-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
-                </svg>
+                <ArrowNext />
               </Button>
             </div>
             <Row className="d-flex flex-row justify-content-between"></Row>

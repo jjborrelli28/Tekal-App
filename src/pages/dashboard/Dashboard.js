@@ -24,16 +24,9 @@ const Dashboard = () => {
     const newData = data && [...data];
     sortData(sortBy, mode, newData);
     setItems(
-      newData?.filter(
-        (item) => item.name.toLowerCase().includes(search) && item
-      )
+      newData?.filter((item) => item.name.toLowerCase().includes(search))
     );
   }, [data, sortBy, mode, search]);
-
-  const showItemModal = (index) => {
-    dispatch({ type: types.SET_ITEM, payload: index });
-    setShowItem(true);
-  };
 
   const toggleSort = (typeAsc, typeDsc, statusAsc, statusDsc) => {
     if (status.disable) {
@@ -53,6 +46,11 @@ const Dashboard = () => {
         type: typeAsc,
       });
     }
+  };
+
+  const showItemModal = (index) => {
+    dispatch({ type: types.SET_ITEM, payload: index });
+    setShowItem(true);
   };
 
   return (
